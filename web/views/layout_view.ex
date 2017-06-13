@@ -77,9 +77,7 @@ defmodule ExAdmin.LayoutView do
   def site_static_url(filename) do
     endpoint = Application.get_env(:admin, Admin.Endpoint)
     url = build_url(endpoint[:static_url]) |> String.Chars.URI.to_string()
-    result = url<>filename
-    IO.inspect "EXADMIN STATICURL: #{inspect result}"
-    result
+    url<>filename
   end
 
   defp build_url(static_url_config) do
