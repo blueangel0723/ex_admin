@@ -74,4 +74,26 @@ defmodule ExAdmin.LayoutView do
     end
   end
 
+  def site_static_url(filename) do
+    endpoint = Application.get_env(:admin, Admin.Endpoint)
+    url = build_url(endpoint[:static_url]) |> String.Chars.URI.to_string()
+    result = url<>filename
+    IO.inspect "EXADMIN STATICURL: #{inspect result}"
+    result
+  end
+
+  defp build_url(static_url_config) do
+    [scheme: scheme, host: host, port: port] = static_url_config
+    host = host_to_binary(host)
+    port = port_to_integer(port)
+    %URI{scheme: scheme, port: port, host: host}
+  end
+
+  defp host_to_binary({:system, env_var}), do: host_to_binary(System.get_env(env_var))
+  defp host_to_binary(host), do: host
+
+  defp port_to_integer({:system, env_var}), do: port_to_integer(System.get_env(env_var))
+  defp port_to_integer(port) when is_binary(port), do: String.to_integer(port)
+  defp port_to_integer(port) when is_integer(port), do: port
+
 end
